@@ -1,3 +1,5 @@
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b199a561-7703-4cd9-a244-6327f930c423" />
+
 # CS2 Server Manager
 CS2 Server Manager is a TUI tool that allows you to choose CS2 servers you want to play on with ease.
 
