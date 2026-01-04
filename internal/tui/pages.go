@@ -3,6 +3,8 @@ package tui
 import (
 	"log"
 	"strconv"
+	"sort"
+	"strings"
 
 	"github.com/rivo/tview"
 	"github.com/gdamore/tcell/v2"
@@ -47,10 +49,11 @@ func InitStartPage(ui *UI, cfg *config.Config) tview.Primitive {
 	    MainText: "Unblock all servers",
 	    Secondary: func() string {
 	      blockedCount, _ := firewall.GetBlockedIpCount()
-	      if firewall.CustomChainExists() {
-	        return "[red]" + strconv.Itoa(blockedCount) + " IPs currently blocked"
-	      }
-	      return "Nothing to unblock"
+				if blockedCount == 0 {
+					return "[green]" + strconv.Itoa(blockedCount) + " IPs currently blocked"
+				} else {
+					return "[red]" + strconv.Itoa(blockedCount) + " IPs currently blocked"
+				}
 	    },
 			Shortcut: '3',
 	    Action: func() { firewall.UnBlockIps(func() { go ui.RefreshStartList() }) },
@@ -129,6 +132,31 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
       desc: pop.Desc,
     })
   }
+
+  // sort servers alphabetically by whats inside ()
+  sort.Slice(items, func(i, j int) bool {
+    a := items[i].desc
+    b := items[j].desc
+
+    aStart := strings.LastIndex(a, "(")
+    aEnd := strings.LastIndex(a, ")")
+    bStart := strings.LastIndex(b, "(")
+    bEnd := strings.LastIndex(b, ")")
+
+    var aKey, bKey string
+    if aStart != -1 && aEnd != -1 && aStart < aEnd {
+      aKey = a[aStart+1 : aEnd]
+    } else {
+      aKey = a
+    }
+    if bStart != -1 && bEnd != -1 && bStart < bEnd {
+      bKey = b[bStart+1 : bEnd]
+    } else {
+      bKey = b
+    }
+
+    return aKey < bKey
+  })
 
   updateTable := func() {
     table.Clear()

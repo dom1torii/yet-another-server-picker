@@ -12,7 +12,7 @@ import (
 )
 
 func BlockIps(cfg *config.Config, onDone func()) {
-	// UnBlockIps(onDone)
+	UnBlockIps(onDone)
 	ipsFile := cfg.IpsPath
 
 	ruleName := "CS2_BLOCKLIST"
