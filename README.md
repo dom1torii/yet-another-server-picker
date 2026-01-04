@@ -14,7 +14,8 @@ No, because it just doesn't allow your PC to connect to some IPs. It doesn't int
 ## Installation
 ### Releases
 
-Later
+1. Go to https://github.com/dom1torii/cs2-server-manager/releases/tag/0.0.1 
+2. Download and extract the archive
 
 ### Build from source
 
