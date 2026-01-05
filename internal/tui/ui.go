@@ -2,22 +2,26 @@ package tui
 
 import (
 	"github.com/rivo/tview"
+	"github.com/dom1torii/cs2-server-manager/internal/app"
 )
 
 type UI struct {
   App   *tview.Application
   Pages *tview.Pages
+  State *app.AppState
 
   RefreshStartList func()
+  RefreshSelectPage func()
 }
 
 func New() *UI {
-	app := tview.NewApplication()
+	tviewapp := tview.NewApplication()
 	pages := tview.NewPages()
 
 	return &UI{
-		App: app,
+		App: tviewapp,
 		Pages: pages,
+		State: &app.AppState{},
 	}
 }
 

@@ -14,6 +14,7 @@ import (
 	"github.com/dom1torii/cs2-server-manager/internal/fs"
 	"github.com/dom1torii/cs2-server-manager/internal/ips"
 	"github.com/dom1torii/cs2-server-manager/internal/platform/firewall"
+	"github.com/dom1torii/cs2-server-manager/internal/presets"
 )
 
 type StartListItemData struct {
@@ -34,6 +35,12 @@ func InitStartPage(ui *UI, cfg *config.Config) tview.Primitive {
 	    Action: func() { ui.SwitchPage("select") },
 	  },
 	  {
+	    MainText: "Presets",
+	    Secondary: nil,
+			Shortcut: '2',
+	    Action: func() { ui.SwitchPage("presets") },
+	  },
+	  {
 	    MainText: "Block servers you don't want",
 	    Secondary: func() string {
 	      ipsFile := cfg.IpsPath
@@ -42,7 +49,7 @@ func InitStartPage(ui *UI, cfg *config.Config) tview.Primitive {
 	      }
 	      return ipsFile + " is empty, nothing to block"
 	    },
-			Shortcut: '2',
+			Shortcut: '3',
 	    Action: func() { firewall.BlockIps(cfg, func() { go ui.RefreshStartList() }) },
 	  },
 	  {
@@ -55,7 +62,7 @@ func InitStartPage(ui *UI, cfg *config.Config) tview.Primitive {
 					return "[red]" + strconv.Itoa(blockedCount) + " IPs currently blocked"
 				}
 	    },
-			Shortcut: '3',
+			Shortcut: '4',
 	    Action: func() { firewall.UnBlockIps(func() { go ui.RefreshStartList() }) },
 	  },
 	  {
@@ -102,10 +109,16 @@ func InitStartPage(ui *UI, cfg *config.Config) tview.Primitive {
 	root := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(nil,0,1,false).
-		AddItem(flex,10,1,true).
+		AddItem(flex,20,1,true).
 		AddItem(nil,0,1,false)
 
 	return root
+}
+
+type popItem struct {
+  key     string
+  desc    string
+  checked bool
 }
 
 func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
@@ -119,12 +132,6 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
   table := tview.NewTable().
     SetSelectable(true, true)
 
-  type popItem struct {
-    key     string
-    desc    string
-    checked bool
-  }
-
   var items []popItem
   for key, pop := range response.Pops {
     items = append(items, popItem{
@@ -132,6 +139,12 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
       desc: pop.Desc,
     })
   }
+
+  if ui != nil && ui.State != nil {
+    applyPreset(items, ui.State.ActivePreset)
+    ui.State.ActivePreset = nil
+  }
+
 
   // sort servers alphabetically by whats inside ()
   sort.Slice(items, func(i, j int) bool {
@@ -180,6 +193,15 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
       table.SetCell(row, col+1,
         tview.NewTableCell(item.desc).
           SetSelectable(true))
+    }
+  }
+
+  // refresh the table so the preset actually applies
+  ui.RefreshSelectPage = func() {
+    if ui.State.ActivePreset != nil {
+      applyPreset(items, ui.State.ActivePreset)
+      ui.State.ActivePreset = nil // Clear it after applying
+      updateTable()
     }
   }
 
@@ -248,8 +270,6 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
       return nil
     }
 
-
-
     return event
   })
 
@@ -259,7 +279,89 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
   return table
 }
 
+func InitPresetsPage(ui *UI, cfg *config.Config) tview.Primitive {
+	list := tview.NewList()
+
+	// sort alphabetically
+ 	keys := make([]string, 0, len(presets.Presets))
+  for k := range presets.Presets {
+    keys = append(keys, k)
+  }
+  sort.Strings(keys)
+
+  // runes for correct shortcuts
+  shortcuts := []rune{
+  	'1','2','3','4','5','6','7','8','9','0',
+  	'a','s','d','f','g','h','j','k','l',
+  }
+
+  // create a list item for every preset
+  for i, k := range keys {
+    p := presets.Presets[k]
+    preset := p
+
+    var shortcut rune
+    if i < len(shortcuts) {
+      shortcut = shortcuts[i]
+    } else {
+      shortcut = 0
+    }
+
+    list.AddItem(preset.Name, "", shortcut, func() {
+      ui.State.ActivePreset = &preset
+      if ui.RefreshSelectPage != nil {
+        ui.RefreshSelectPage()
+      }
+      ui.Pages.SwitchToPage("select")
+    })
+  }
+
+  list.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+  	switch {
+	   case event.Rune() == 'q':
+	  		ui.SwitchPage("start")
+	     	return nil
+
+	   case event.Rune() == 'Q':
+	  		ui.SwitchPage("start")
+	     	return nil
+	   }
+    return event
+  })
+
+  list.ShowSecondaryText(false).
+  	SetBackgroundColor(tcell.ColorDefault).
+  	SetBorder(true)
+
+ 	flex := tview.NewFlex().
+		AddItem(nil,0,1,false).
+		AddItem(list,60,1,true).
+		AddItem(nil,0,1,false)
+
+	root := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(nil,0,1,false).
+		AddItem(flex,20,1,true).
+		AddItem(nil,0,1,false)
+
+	return root
+}
+
 func SetupPages(ui *UI, cfg *config.Config) {
   ui.Pages.AddAndSwitchToPage("start", InitStartPage(ui, cfg), true)
   ui.Pages.AddPage("select", InitSelectPage(ui, cfg), true, false)
+  ui.Pages.AddPage("presets", InitPresetsPage(ui, cfg), true, false)
+}
+
+func applyPreset(items []popItem, preset *presets.Preset) {
+    if preset == nil || preset.Pops == nil {
+        return
+    }
+    for i := range items {
+        if _, ok := preset.Pops[items[i].key]; ok {
+            items[i].checked = true
+        } else {
+            items[i].checked = false
+        }
+    }
 }
