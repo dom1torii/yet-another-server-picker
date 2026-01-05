@@ -17,7 +17,7 @@ No, because all it does is prevent your PC from connecting to certain IPs. It do
 1. Go to https://github.com/dom1torii/cs2-server-manager/releases
 2. Download and extract the archive that matches your system
 
-### Scoop
+### Scoop (windows)
 
 1. Install Scoop -> https://scoop.sh/
 2. Add a cs2 bucket with `scoop add bucket cs2 https://github.com/dom1torii/cs2`
