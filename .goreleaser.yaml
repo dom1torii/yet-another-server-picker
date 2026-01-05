@@ -28,3 +28,6 @@ archives:
 
 changelog:
   disable: true
+
+release:
+  disable: true
