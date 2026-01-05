@@ -161,9 +161,12 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
   updateTable := func() {
     table.Clear()
 
+    cols := 2
+    rows := (len(items) + cols - 1) / cols
+
     for i, item := range items {
-      row := i / 2
-      col := (i % 2) * 2
+      row := i % rows
+      col := (i / rows) * 2
 
       checkbox := "[ ]"
       if item.checked {
@@ -199,7 +202,9 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
   // use arrow keys to navigate, space to select, enter to proceed and q/Q to go back
   table.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
     row, col := table.GetSelection()
-    index := row*2 + col/2
+    cols := 2
+    rows := (len(items) + cols - 1) / cols
+    index := (col / 2) * rows + row
 
     switch {
     case event.Key() == tcell.KeyRune && event.Rune() == ' ':
