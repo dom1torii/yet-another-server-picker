@@ -1,10 +1,11 @@
 //go:build windows
+
 package sudo
 
 import (
 	"bufio"
-	"os"
 	"fmt"
+	"os"
 )
 
 func CheckIfSudo() {

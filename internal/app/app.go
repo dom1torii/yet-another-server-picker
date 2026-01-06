@@ -5,5 +5,5 @@ import (
 )
 
 type AppState struct {
-  ActivePreset *presets.Preset
+	ActivePreset *presets.Preset
 }

@@ -3,8 +3,8 @@
 package sudo
 
 import (
-	"os"
 	"fmt"
+	"os"
 )
 
 func CheckIfSudo() {

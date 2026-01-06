@@ -1,11 +1,12 @@
 //go:build windows
+
 package firewall
 
 import (
-	"os/exec"
-	"os"
-	"log"
 	"bufio"
+	"log"
+	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/dom1torii/cs2-server-manager/internal/config"
@@ -64,13 +65,6 @@ func BlockIps(cfg *config.Config, onDone func()) {
 	}
 }
 
-
-
-
-
-
-
-
 func UnBlockIps(onDone func()) {
 	ruleName := "CS2_BLOCKLIST"
 
@@ -86,9 +80,9 @@ func UnBlockIps(onDone func()) {
 
 func CustomChainExists() bool {
 
-    cmd := exec.Command("netsh", "advfirewall", "firewall", "show", "rule", "name=CS2_BLOCKLIST")
+	cmd := exec.Command("netsh", "advfirewall", "firewall", "show", "rule", "name=CS2_BLOCKLIST")
 
-    return cmd.Run() == nil
+	return cmd.Run() == nil
 }
 
 func GetBlockedIpCount() (int, error) {

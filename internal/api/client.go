@@ -1,10 +1,10 @@
 package api
 
 import (
+	"encoding/json"
+	"io"
 	"log"
 	"net/http"
-	"io"
-	"encoding/json"
 )
 
 type Response struct {
@@ -39,14 +39,14 @@ func FetchRelays() (Response, error) {
 
 	log.Println("Success fetching API. Status:", resp.Status)
 
- 	var response Response
-  if err := json.Unmarshal(body, &response); err != nil {
-    return Response{}, err
-  }
+	var response Response
+	if err := json.Unmarshal(body, &response); err != nil {
+		return Response{}, err
+	}
 
 	response.Pops = filterPops(response.Pops)
 
-  return response, nil
+	return response, nil
 }
 
 // skip useless pops that have no relays
@@ -57,5 +57,5 @@ func filterPops(pops map[string]Pop) map[string]Pop {
 			filteredPops[key] = pop
 		}
 	}
-  return filteredPops
+	return filteredPops
 }
