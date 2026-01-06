@@ -19,15 +19,16 @@ Releases are available for Windows and Linux on the [releases page](https://gith
 
 #### AUR (Arch Linux) 
 
-```
+```bash
 Soon
 ```
 
 ### Windows
 
 #### [Scoop](https://scoop.sh/) (recommended)
-```
-scoop bucket add cs2 https://github.com/dom1torii/cs2;scoop install cs2/cs2-server-manager
+
+```powershell
+scoop bucket add cs2 https://github.com/dom1torii/cs2; scoop install cs2/cs2-server-manager
 ```
 
 ### Building from source
