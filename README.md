@@ -49,7 +49,6 @@ Soon
 
 Based on priority, top to bottom: 
 - UI/UX improvements
-- Server presets
 - Global/China version switch
 - Settings and config file
 - Display ping to each server
