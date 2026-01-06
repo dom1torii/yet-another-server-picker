@@ -27,7 +27,7 @@ Soon
 
 #### [Scoop](https://scoop.sh/) (recommended)
 
-```powershell
+```bash
 scoop bucket add cs2 https://github.com/dom1torii/cs2
 scoop install cs2/cs2-server-manager
 ```
