@@ -20,7 +20,7 @@ func BlockIps(cfg *config.Config, onDone func()) {
 
 	file, err := os.Open(ipsFile)
 	if err != nil {
-		log.Fatalln("Failed to open a file containing ips:", err)
+		log.Fatalln("Failed to open a file containing ips: ", err)
 	}
 	defer file.Close()
 
@@ -36,7 +36,7 @@ func BlockIps(cfg *config.Config, onDone func()) {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatalln("Failed to read ips file:", err)
+		log.Fatalln("Failed to read ips file: ", err)
 	}
 
 	if len(ips) == 0 {
@@ -55,7 +55,7 @@ func BlockIps(cfg *config.Config, onDone func()) {
 	)
 
 	if err := cmd.Run(); err != nil {
-		log.Fatalln("Failed to create Windows Firewall rule:", err)
+		log.Fatalln("Failed to create Windows Firewall rule: ", err)
 	}
 
 	log.Println("Blocked server ips in Windows Firewall")

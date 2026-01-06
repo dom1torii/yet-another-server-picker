@@ -50,7 +50,7 @@ func Init() *Config {
 func initLogger(loc string) {
 	f, err := os.OpenFile(loc, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatalln("Failed to open log file:", err)
+		log.Fatalln("Failed to open log file: ", err)
 	}
 	log.SetOutput(f)
 	log.SetFlags(log.LstdFlags | log.Lshortfile)

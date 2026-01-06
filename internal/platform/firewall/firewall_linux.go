@@ -20,20 +20,27 @@ func BlockIps(cfg *config.Config, onDone func()) {
 	customChain := "CS2_BLOCKLIST"
 
 	// create custom chain for cs2
-	exec.Command("iptables", "-N", customChain).Run()
+	createChain := exec.Command("iptables", "-N", customChain)
+	if err := createChain.Run(); err != nil {
+		log.Fatalln("Failed to create custom chain: ")
+	}
 
 	// tie our chain to OUTPUT
 	if err := exec.Command("iptables", "-C", chain, "-j", customChain).Run(); err != nil {
 		if err := exec.Command("iptables", "-A", chain, "-j", customChain).Run(); err != nil {
-			log.Fatalln("Failed to tie chains:", err)
+			log.Fatalln("Failed to tie chains: ", err)
 		}
 	}
 
 	file, err := os.Open(ipsFile)
 	if err != nil {
-		log.Fatalln("Failed to open a file containing ips:", err)
+		log.Fatalln("Failed to open a file containing ips: ", err)
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalln("Failed to close file: ")
+		}
+	}()
 
 	// read ips from a file and add them to commands 1 by 1
 	var cmds []string
@@ -51,7 +58,7 @@ func BlockIps(cfg *config.Config, onDone func()) {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		log.Fatalln("Failed to open a file containing ips:", err)
+		log.Fatalln("Failed to open a file containing ips: ", err)
 	}
 
 	// if ips are the same, exit
@@ -64,7 +71,7 @@ func BlockIps(cfg *config.Config, onDone func()) {
 	batch := strings.Join(cmds, " && ")
 	command := exec.Command("bash", "-c", batch)
 	if err := command.Run(); err != nil {
-		log.Fatalln("Failed to run iptables commands:", err)
+		log.Fatalln("Failed to run iptables commands: ", err)
 	}
 
 	log.Println("Blocked server ips from txt")
@@ -79,9 +86,18 @@ func UnBlockIps(onDone func()) {
 	customChain := "CS2_BLOCKLIST"
 
 	// untie and delete custom chain
-	exec.Command("iptables", "-D", chain, "-j", customChain).Run()
-	exec.Command("iptables", "-F", customChain).Run()
-	exec.Command("iptables", "-X", customChain).Run()
+	untieChain := exec.Command("iptables", "-D", chain, "-j", customChain)
+	if err := untieChain.Run(); err != nil {
+		log.Fatalln("Error untying chain: ", err)
+	}
+	flushChain := exec.Command("iptables", "-F", customChain)
+	if err := flushChain.Run(); err != nil {
+		log.Fatalln("Error flushing chain: ", err)
+	}
+	deleteChain := exec.Command("iptables", "-X", customChain)
+	if err := deleteChain.Run(); err != nil {
+		log.Fatalln("Error deleting chain: ", err)
+	}
 
 	log.Println("Unblocked server ips from txt")
 

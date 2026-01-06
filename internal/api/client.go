@@ -28,13 +28,18 @@ func FetchRelays() (Response, error) {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalln("Error fetching:", err)
+		log.Fatalln("Error fetching: ", err)
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Fatalln("Error closing body: ", err)
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln("Error fetching:", err)
+		log.Fatalln("Error fetching: ", err)
 	}
 
 	log.Println("Success fetching API. Status:", resp.Status)

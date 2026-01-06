@@ -126,7 +126,7 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
 
 	response, err := api.FetchRelays()
 	if err != nil {
-		log.Fatalln("Failed to fetch relays:", err)
+		log.Fatalln("Failed to fetch relays: ", err)
 	}
 
 	table := tview.NewTable().

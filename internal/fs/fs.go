@@ -50,7 +50,12 @@ func GetFileLineCount(filePath string) int {
 	if err != nil {
 		log.Fatalln("Failed to open file:", err)
 	}
-	defer file.Close()
+
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalln("Failed to close file:", err)
+		}
+	}()
 
 	scanner := bufio.NewScanner(file)
 
