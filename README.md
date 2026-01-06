@@ -13,30 +13,22 @@ No, because all it does is prevent your PC from connecting to certain IPs. It do
 
 ## Installation
 
+Releases are available for Windows and Linux on the [releases page](https://github.com/dom1torii/cs2-server-manager/releases/).
+
 ### Linux 
-
-#### Releases
-
-1. Go to https://github.com/dom1torii/cs2-server-manager/releases
-2. Download and extract **cs2-server-manager_Linux_x86_64.tar.gz** from the latest release
 
 #### AUR (Arch Linux) 
 
+```
 Soon
+```
 
 ### Windows
 
-#### Scoop
-
-1. Open your terminal
-2. Install Scoop -> https://scoop.sh/
-3. Add a cs2 bucket with `scoop add bucket cs2 https://github.com/dom1torii/cs2`
-4. Install with `scoop install cs2/cs2-server-manager`
-
-#### Releases
-
-1. Go to https://github.com/dom1torii/cs2-server-manager/releases
-2. Download and extract **cs2-server-manager_Windows_x86_64.zip** from the latest release
+#### [Scoop](https://scoop.sh/) (recommended)
+```
+scoop bucket add cs2 https://github.com/dom1torii/cs2;scoop install cs2/cs2-server-manager
+```
 
 ### Building from source
 
