@@ -51,7 +51,7 @@ scoop install cs2/cs2-server-manager
 
 ## Notes
 
-On linux, only iptables is currently supported, working on making `ufw` and `nftables` work too.
+On linux, only `iptables` is currently supported. Working on making `ufw` and `nftables` work too.
 
 The tool is not fully accurate and sometimes will connect you to server that are **routed** through the server you chose. 
 Its also possible that you wont find the server you selected. 
