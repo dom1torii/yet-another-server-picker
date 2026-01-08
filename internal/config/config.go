@@ -19,6 +19,8 @@ type Config struct {
 	// cli mode
 	ListRelays bool
 	SelectRelays []string
+	ListPresets bool
+	SelectPreset string
 	BlockRelays bool
 	UnBlockRelays bool
 	ToBlockCount bool
@@ -37,6 +39,8 @@ func Init() *Config {
 
 	listRelays := pflag.Bool("listrelays", false, "List available relays")
 	selectRelays := pflag.String("selectrelays", "", "Select relays from the list (separated with comma)")
+	listPresets := pflag.Bool("listpresets", false, "List available presets")
+	selectPreset := pflag.String("selectpreset", "", "Select a preset from the list")
 	blockRelays := pflag.Bool("blockrelays", false, "Block selected relays")
 	unBlockRelays := pflag.Bool("unblockrelays", false, "Unblock selected relays")
 	toBlockCount := pflag.Bool("toblockcount", false, "Prints amount of relays in your ips file")
@@ -55,6 +59,8 @@ func Init() *Config {
 	cfg.UnBlockRelays = *unBlockRelays
 	cfg.ToBlockCount = *toBlockCount
 	cfg.BlockedCount = *blockedCount
+	cfg.ListPresets = *listPresets
+	cfg.SelectPreset = *selectPreset
 
 
 
