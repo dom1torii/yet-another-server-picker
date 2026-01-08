@@ -41,8 +41,7 @@ scoop install cs2/cs2-server-manager
 
 ## Planned features
 
-- Support linux firewall tools other than iptables
-- Complete usability without tui (using flags)
+- Support linux firewall utils other than iptables
 - Toggle between blocking/allowing servers instead of just allowing
 - UI/UX improvements
 - Global/China version switch
