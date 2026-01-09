@@ -17,14 +17,14 @@ type Config struct {
 	Logging  bool
 
 	// cli mode
-	ListRelays bool
-	SelectRelays []string
-	ListPresets bool
-	SelectPreset string
-	BlockRelays bool
+	ListRelays    bool
+	SelectRelays  []string
+	ListPresets   bool
+	SelectPreset  string
+	BlockRelays   bool
 	UnBlockRelays bool
-	ToBlockCount bool
-	BlockedCount bool
+	ToBlockCount  bool
+	BlockedCount  bool
 }
 
 func Init() *Config {
@@ -53,16 +53,14 @@ func Init() *Config {
 
 	cfg.ListRelays = *listRelays
 	if *selectRelays != "" {
-    cfg.SelectRelays = strings.Split(*selectRelays, ",")
-  }
+		cfg.SelectRelays = strings.Split(*selectRelays, ",")
+	}
 	cfg.BlockRelays = *blockRelays
 	cfg.UnBlockRelays = *unBlockRelays
 	cfg.ToBlockCount = *toBlockCount
 	cfg.BlockedCount = *blockedCount
 	cfg.ListPresets = *listPresets
 	cfg.SelectPreset = *selectPreset
-
-
 
 	if *logFlag {
 		path := *logPath

@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"time"
 
 	"github.com/dom1torii/cs2-server-manager/internal/config"
+	"github.com/prometheus-community/pro-bing"
 )
 
 func WriteIpsToFile(ips []string, cfg *config.Config) {
@@ -36,4 +38,24 @@ func WriteIpsToFile(ips []string, cfg *config.Config) {
 	}
 
 	log.Println("Wrote ips to " + ipsFile)
+}
+
+func GetPing(ip string) time.Duration {
+	pinger, err := probing.NewPinger(ip)
+	if err != nil {
+		return 0
+	}
+
+	pinger.SetPrivileged(false)
+
+	pinger.Count = 1
+	pinger.Timeout = time.Millisecond * 500
+
+	err = pinger.Run()
+	if err != nil {
+		return 0
+	}
+
+	stats := pinger.Statistics()
+	return stats.AvgRtt
 }

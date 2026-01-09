@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"fmt"
 	"log"
 	"sort"
 	"strconv"
@@ -118,6 +119,7 @@ func InitStartPage(ui *UI, cfg *config.Config) tview.Primitive {
 type popItem struct {
 	key     string
 	desc    string
+	ping    string
 	checked bool
 }
 
@@ -137,6 +139,7 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
 		items = append(items, popItem{
 			key:  key,
 			desc: pop.Desc,
+			ping: " (...)",
 		})
 	}
 
@@ -190,9 +193,23 @@ func InitSelectPage(ui *UI, cfg *config.Config) tview.Primitive {
 					SetSelectable(true))
 
 			table.SetCell(row, col+1,
-				tview.NewTableCell(item.desc).
+				tview.NewTableCell(item.desc+item.ping).
 					SetSelectable(true))
 		}
+	}
+
+	// ping 20 ips at a time
+	maxPings := make(chan struct{}, 20)
+
+	for i := range items {
+		ipToPing := response.Pops[items[i].key].Relays[0].Ipv4
+
+		// update pings
+		go func(index int, ip string) {
+			maxPings <- struct{}{}
+			defer func() { <-maxPings }()
+			updatePing(ui, &items[index], ip, updateTable)
+		}(i, ipToPing)
 	}
 
 	// refresh the table so the preset actually applies
@@ -363,4 +380,17 @@ func applyPreset(items []popItem, preset *presets.Preset) {
 			items[i].checked = false
 		}
 	}
+}
+
+func updatePing(ui *UI, item *popItem, ip string, onUpdate func()) {
+	ping := ips.GetPing(ip)
+
+	ui.App.QueueUpdateDraw(func() {
+		if ping > 0 {
+			item.ping = fmt.Sprintf(" [yellow](%dms)[white]", ping.Milliseconds())
+		} else {
+			item.ping = " [red](timed out)[white]"
+		}
+		onUpdate()
+	})
 }
