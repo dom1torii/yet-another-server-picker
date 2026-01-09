@@ -43,17 +43,17 @@ func WriteIpsToFile(ips []string, cfg *config.Config) {
 func GetPing(ip string) time.Duration {
 	pinger, err := probing.NewPinger(ip)
 	if err != nil {
-		return 0
+		log.Fatalln("Failed to create pinger: ", err)
 	}
 
-	pinger.SetPrivileged(false)
+	pinger.SetPrivileged(true)
 
 	pinger.Count = 1
 	pinger.Timeout = time.Millisecond * 500
 
 	err = pinger.Run()
 	if err != nil {
-		return 0
+		log.Fatalln("Failed to run pinger: ", err)
 	}
 
 	stats := pinger.Statistics()
