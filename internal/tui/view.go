@@ -44,6 +44,19 @@ func (m *model) startView() string {
 	var startChoices []string
 	for i, label := range startItems {
 		startChoices = append(startChoices, startItem(label, m.StartSelection == i))
+		// add status lines
+		if i == 2 {
+			status := fmt.Sprintf("    %d IPs to block", m.IpsCount)
+			startChoices = append(startChoices, statusStyle.Render(status))
+		}
+		if i == 3 {
+			status := fmt.Sprintf("    %d IPs currently blocked", m.BlockedCount)
+			if m.BlockedCount == 0 {
+				startChoices = append(startChoices, statusOkStyle.Render(status))
+			} else {
+				startChoices = append(startChoices, statusWarningStyle.Render(status))
+			}
+		}
 	}
 
 	items := strings.Join(startChoices, "\n")
@@ -83,7 +96,7 @@ func (m *model) relaysView() string {
 			m.height,
 			lipgloss.Center,
 			lipgloss.Center,
-			"Loading relays data...",
+			"Loading servers data...",
 		)
 	}
 	// create checkboxes
@@ -161,10 +174,27 @@ func (m *model) relaysView() string {
 	rightCol := lipgloss.JoinVertical(lipgloss.Left, rightVisible...)
 	columns := lipgloss.JoinHorizontal(lipgloss.Top, leftCol, rightCol)
 
+	// indicator if you can scroll up or down
+	topIndicator := " "
+	bottomIndicator := " "
+
+	if m.StartRow > 0 {
+		topIndicator = "↑ more"
+	}
+	if m.StartRow+maxVisibleRows < rows {
+		bottomIndicator = "↓ more"
+	}
+
+	\n
+	topIndicator = lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render(topIndicator)
+	bottomIndicator = lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render(bottomIndicator)
+
 	view := fmt.Sprintf(
-		"%s\n\n%s\n\n%s",
-		titleStyle.Render("Select Relays"),
+		"%s\n%s\n\n%s\n\n%s\n%s",
+		titleStyle.Render("Select servers to play on"),
+		topIndicator,
 		columns,
+		bottomIndicator,
 		wordwrap.String(helpStyle.Render("(←↓↑→: move | space: select | enter: apply | q/esc: back)"), m.width),
 	)
 
@@ -190,7 +220,7 @@ func (m *model) confirmView() string {
 
 	buttons := lipgloss.JoinHorizontal(lipgloss.Top, yes, "    ", no)
 
-	styledTitle := titleStyle.Align(lipgloss.Center).Render("Your IPs file already contains some ips.\nAre you sure you wanna proceed?")
+	styledTitle := titleStyle.Align(lipgloss.Center).Render("Your IPs file already contains some IPs.\nAre you sure you wanna proceed?")
 	styledHelp := helpStyle.Align(lipgloss.Center).Render("(←→: select | enter: confirm | q/esc: back)")
 
 	view := fmt.Sprintf(

@@ -14,6 +14,11 @@ type presetsMsg []string
 
 type isFileEmptyMsg bool
 
+type statusMsg struct {
+	ipsCount     int
+	blockedCount int
+}
+
 type pingMsg struct {
 	index    int
 	duration time.Duration

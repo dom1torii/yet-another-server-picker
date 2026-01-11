@@ -13,6 +13,11 @@ import (
 func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
+	case statusMsg:
+		m.IpsCount = msg.ipsCount
+		m.BlockedCount = msg.blockedCount
+		return m, nil
+
 	case presetsMsg:
 		m.PresetKeys = msg
 		return m, nil
@@ -21,14 +26,17 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg {
 			ips.WriteIpsToFile(m.getUnSelectedIps(), m.cfg)
 			m.state = stateStart
-			return m, nil
+			return m, m.updateStatus()
 		} else {
 			m.state = stateConfirm
 			return m, nil
 		}
 
 	case firewallMsg:
-		return m, m.refreshRelays()
+		return m, tea.Batch(
+			m.refreshRelays(),
+			m.updateStatus(),
+		)
 
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
@@ -194,7 +202,7 @@ func (m *model) updateConfirmSelection(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.ConfirmSelection {
 				ips.WriteIpsToFile(m.getUnSelectedIps(), m.cfg)
 				m.state = stateStart
-				return m, nil
+				return m, m.updateStatus()
 			}
 			m.state = stateRelays
 			return m, nil

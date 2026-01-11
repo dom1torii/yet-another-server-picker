@@ -1,29 +1,26 @@
 package tui
 
 import (
-	"time"
-
-	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/lipgloss"
+	"time"
 
 	"github.com/dom1torii/cs2-server-manager/internal/api"
 	"github.com/dom1torii/cs2-server-manager/internal/config"
 )
 
 var (
-	selectionStyle        = lipgloss.NewStyle().Background(lipgloss.Color("0"))
+	selectionStyle        = lipgloss.NewStyle().Background(lipgloss.Color("8"))
 	checkedStyle          = lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Bold(true)
-	checkedSelectionStyle = lipgloss.NewStyle().Background(lipgloss.Color("0")).Foreground(lipgloss.Color("2")).Bold(true)
+	checkedSelectionStyle = lipgloss.NewStyle().Background(lipgloss.Color("8")).Foreground(lipgloss.Color("2")).Bold(true)
 	goodPingStyle         = lipgloss.NewStyle().Foreground(lipgloss.Color("2"))
 	badPingStyle          = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
 	blockedPingStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("178"))
 	timedoutPingStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("5"))
 	titleStyle            = lipgloss.NewStyle().MarginLeft(2).Bold(true)
-	itemStyle             = lipgloss.NewStyle().PaddingLeft(4)
-	selectedItemStyle     = lipgloss.NewStyle().PaddingLeft(2).Foreground(lipgloss.Color("170"))
-	paginationStyle       = list.DefaultStyles().PaginationStyle.PaddingLeft(4)
+	statusStyle           = lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
+	statusOkStyle         = lipgloss.NewStyle().Foreground(lipgloss.Color("2"))
+	statusWarningStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
 	helpStyle             = lipgloss.NewStyle().Foreground(lipgloss.Color("8")).PaddingLeft(4).PaddingBottom(1)
-	quitTextStyle         = lipgloss.NewStyle().Margin(1, 0, 2, 4)
 )
 
 type sessionState int
@@ -47,6 +44,9 @@ type model struct {
 	Pings           map[int]time.Duration
 	Pinged          int
 	PresetKeys      []string
+
+	IpsCount     int
+	BlockedCount int
 
 	StartSelection   int
 	ConfirmSelection bool
