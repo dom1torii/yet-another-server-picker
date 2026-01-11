@@ -19,6 +19,7 @@ func (m *model) Init() tea.Cmd {
 	return tea.Batch(
 		getRelays(),
 		loadPresets(),
+		m.updateStatus(),
 		tea.SetWindowTitle("CS2 Server Manager"),
 	)
 }
@@ -103,5 +104,13 @@ func loadPresets() tea.Cmd {
 		}
 		sort.Strings(keys)
 		return presetsMsg(keys)
+	}
+}
+
+func (m *model) updateStatus() tea.Cmd {
+	return func() tea.Msg {
+		ipsCount := fs.GetFileLineCount(m.cfg.IpsPath)
+		blockedCount, _ := firewall.GetBlockedIpCount()
+		return statusMsg{ipsCount: ipsCount, blockedCount: blockedCount}
 	}
 }
