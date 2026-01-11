@@ -2,6 +2,9 @@ package main
 
 import (
 	"log"
+	"os"
+
+	tea "github.com/charmbracelet/bubbletea"
 
 	"github.com/dom1torii/cs2-server-manager/internal/cli"
 	"github.com/dom1torii/cs2-server-manager/internal/config"
@@ -18,10 +21,9 @@ func main() {
 		return
 	}
 
-	ui := tui.New()
-	tui.SetupPages(ui, cfg)
-
-	if err := ui.Init(); err != nil {
-		log.Fatalln(err)
+	p := tea.NewProgram(tui.InitialModel(cfg), tea.WithAltScreen())
+	if _, err := p.Run(); err != nil {
+		log.Fatalln("Error starting bubbletea: ", err)
+		os.Exit(1)
 	}
 }

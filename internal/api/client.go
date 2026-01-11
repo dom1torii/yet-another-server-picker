@@ -13,6 +13,7 @@ type Response struct {
 }
 
 type Pop struct {
+	Key    string
 	Desc   string  `json:"desc"`
 	Relays []Relay `json:"relays"`
 }
@@ -59,6 +60,7 @@ func FetchRelays() (Response, error) {
 func filterPops(pops map[string]Pop) map[string]Pop {
 	filteredPops := make(map[string]Pop)
 	for key, pop := range pops {
+		pop.Key = key
 		if len(pop.Relays) > 0 {
 			filteredPops[key] = pop
 		}

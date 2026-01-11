@@ -1,0 +1,228 @@
+package tui
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/reflow/wordwrap"
+
+	"github.com/dom1torii/cs2-server-manager/internal/presets"
+)
+
+func (m *model) View() string {
+	switch m.state {
+	case stateStart:
+		return m.startView()
+	case stateRelays:
+		return m.relaysView()
+	case stateConfirm:
+		return m.confirmView()
+	case statePresets:
+		return m.presetsView()
+	default:
+		return ""
+	}
+}
+
+var startItems = []string{
+	"(1) Select servers",
+	"(2) Presets",
+	"(3) Block servers you don't want",
+	"(4) Unblock all servers",
+	"(q) Quit",
+}
+
+func startItem(label string, isSelected bool) string {
+	if isSelected {
+		return selectionStyle.Render(label)
+	}
+	return label
+}
+
+func (m *model) startView() string {
+	var startChoices []string
+	for i, label := range startItems {
+		startChoices = append(startChoices, startItem(label, m.StartSelection == i))
+	}
+
+	items := strings.Join(startChoices, "\n")
+	view := fmt.Sprintf(
+		"%s\n\n%s\n\n%s",
+		wordwrap.String(titleStyle.Render("CS2 Server Manager"), m.width),
+		lipgloss.NewStyle().Width(35).Render(items),
+		wordwrap.String(helpStyle.Render("(↓↑: move | space/enter: select | q/esc: quit)"), m.width),
+	)
+
+	return lipgloss.Place(
+		m.width,
+		m.height,
+		lipgloss.Center,
+		lipgloss.Center,
+		view,
+	)
+}
+
+func checkbox(label string, pingMs string, isSelected bool, isChecked bool) string {
+	if isSelected {
+		if isChecked {
+			return checkedSelectionStyle.Render("[✓] ") + selectionStyle.Render(label) + " " + pingMs
+		}
+		return selectionStyle.Render("[ ] "+label) + " " + pingMs
+	}
+	if isChecked {
+		return checkedStyle.Render("[✓] ") + label + " " + pingMs
+	}
+	return fmt.Sprintf("[ ] %s", label) + " " + pingMs
+}
+
+func (m *model) relaysView() string {
+	if len(m.Relays) == 0 {
+		return lipgloss.Place(
+			m.width,
+			m.height,
+			lipgloss.Center,
+			lipgloss.Center,
+			"Loading relays data...",
+		)
+	}
+	// create checkboxes
+	var checkboxes []string
+	for i, pop := range m.Relays {
+		_, checked := m.RelaysChecked[i]
+
+		label := pop.Desc
+		maxLabelWidth := (m.width / 2) - 20
+		if len(label) > maxLabelWidth && maxLabelWidth > 3 {
+			label = label[:maxLabelWidth-3] + "..."
+		}
+
+		pingDur, found := m.Pings[i]
+		pingDisplay := "(...)" // display ... if its still loading
+
+		if found {
+			if pingDur > 0 {
+				ms := pingDur.Milliseconds()
+				rawPing := fmt.Sprintf("(%dms)", ms)
+
+				if ms < 100 {
+					pingDisplay = goodPingStyle.Render(rawPing)
+				} else {
+					pingDisplay = badPingStyle.Render(rawPing)
+				}
+			} else if pingDur == -1 {
+				pingDisplay = blockedPingStyle.Render("(blocked)")
+			} else {
+				pingDisplay = timedoutPingStyle.Render("(timed out)")
+			}
+		}
+
+		checkboxes = append(checkboxes, checkbox(label, pingDisplay, m.RelaysSelection == i, checked))
+	}
+
+	// create 2 columns
+	rows := m.getRows()
+	maxVisibleRows := max(m.height-8, 1)
+	currentRow := m.RelaysSelection % rows
+	if currentRow < m.StartRow {
+		m.StartRow = currentRow
+	} else if currentRow >= m.StartRow+maxVisibleRows {
+		m.StartRow = currentRow - maxVisibleRows + 1
+	}
+
+	if rows > maxVisibleRows && m.StartRow > rows-maxVisibleRows {
+		m.StartRow = rows - maxVisibleRows
+	}
+
+	if m.StartRow < 0 || rows <= maxVisibleRows {
+		m.StartRow = 0
+	}
+
+	mid := rows
+	leftEnd := min(m.StartRow+maxVisibleRows, mid)
+	leftVisible := checkboxes[m.StartRow:leftEnd]
+
+	var rightVisible []string
+	if mid < len(checkboxes) {
+		rightTotal := checkboxes[mid:]
+		rStart := m.StartRow
+		rEnd := m.StartRow + maxVisibleRows
+
+		if rStart < len(rightTotal) {
+			if rEnd > len(rightTotal) {
+				rEnd = len(rightTotal)
+			}
+			rightVisible = rightTotal[rStart:rEnd]
+		}
+	}
+
+	// join columns
+	leftCol := lipgloss.NewStyle().PaddingRight(4).Render(lipgloss.JoinVertical(lipgloss.Left, leftVisible...))
+	rightCol := lipgloss.JoinVertical(lipgloss.Left, rightVisible...)
+	columns := lipgloss.JoinHorizontal(lipgloss.Top, leftCol, rightCol)
+
+	view := fmt.Sprintf(
+		"%s\n\n%s\n\n%s",
+		titleStyle.Render("Select Relays"),
+		columns,
+		wordwrap.String(helpStyle.Render("(←↓↑→: move | space: select | enter: apply | q/esc: back)"), m.width),
+	)
+
+	return lipgloss.Place(
+		m.width,
+		m.height,
+		lipgloss.Center,
+		lipgloss.Center,
+		view,
+	)
+}
+
+func (m *model) confirmView() string {
+	var yes, no string
+
+	if m.ConfirmSelection {
+		yes = selectionStyle.Render(" YES ")
+		no = " NO "
+	} else {
+		yes = " YES "
+		no = selectionStyle.Render(" NO ")
+	}
+
+	buttons := lipgloss.JoinHorizontal(lipgloss.Top, yes, "    ", no)
+
+	styledTitle := titleStyle.Align(lipgloss.Center).Render("Your IPs file already contains some ips.\nAre you sure you wanna proceed?")
+	styledHelp := helpStyle.Align(lipgloss.Center).Render("(←→: select | enter: confirm | q/esc: back)")
+
+	view := fmt.Sprintf(
+		"%s\n\n%s\n\n%s",
+		styledTitle,
+		buttons,
+		wordwrap.String(styledHelp, m.width),
+	)
+
+	return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, view)
+}
+
+func (m *model) presetsView() string {
+	if len(m.PresetKeys) == 0 {
+		return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, "Loading presets...")
+	}
+
+	var choices []string
+	for i, key := range m.PresetKeys {
+		p := presets.Presets[key]
+		choices = append(choices, startItem(p.Name, m.PresetSelection == i))
+	}
+
+	items := strings.Join(choices, "\n")
+	styledTitle := titleStyle.Align(lipgloss.Center).Render("Presets")
+
+	view := fmt.Sprintf(
+		"%s\n\n%s\n\n%s",
+		styledTitle,
+		lipgloss.NewStyle().Width(15).Render(items),
+		wordwrap.String(helpStyle.Render("(↓↑: move | space/enter: select | q/esc: quit)"), m.width),
+	)
+
+	return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, view)
+}

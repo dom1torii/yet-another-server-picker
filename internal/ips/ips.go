@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"log"
 	"os"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/dom1torii/cs2-server-manager/internal/config"
 	"github.com/prometheus-community/pro-bing"
@@ -55,11 +55,11 @@ func GetPing(ip string) time.Duration {
 	err = pinger.Run()
 	if err != nil {
 		// don't do anything if ip is blocked with firewall
-    if strings.Contains(err.Error(), "operation not permitted") {
-        return -1
-    }
-    log.Fatalln("Failed to run pinger: ", err)
-  }
+		if strings.Contains(err.Error(), "operation not permitted") {
+			return -1
+		}
+		log.Fatalln("Failed to run pinger: ", err)
+	}
 
 	stats := pinger.Statistics()
 	return stats.AvgRtt
