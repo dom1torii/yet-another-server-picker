@@ -27,11 +27,18 @@ func GetHomeDir() string {
 	return usr.HomeDir
 }
 
-// create a directory if it doesn't exist
 func EnsureDirectory(path string) {
-	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-		log.Fatalln("Failed to create directory for", path, ":", err)
-	}
+  if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+    log.Fatalln("Failed to create directory: ", err)
+  }
+
+  if _, err := os.Stat(path); os.IsNotExist(err) {
+    f, err := os.Create(path)
+    if err != nil {
+      log.Fatalln("Failed to create file: ", err)
+    }
+    f.Close()
+  }
 }
 
 func IsFileEmpty(filePath string) bool {
