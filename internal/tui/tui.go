@@ -43,7 +43,7 @@ type model struct {
 	RelaysChecked   map[int]struct{}
 	Pings           map[int]time.Duration
 	Pinged          int
-	BlockedMap map[string]bool
+	BlockedMap      map[string]bool
 	PresetKeys      []string
 
 	IpsCount     int
