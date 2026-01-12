@@ -1,4 +1,4 @@
 # Added by goreleaser init:
 dist/
-
+build/
 *.syso

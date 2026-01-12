@@ -1,0 +1,36 @@
+version: '3'
+
+vars:
+  BINARY_NAME: cs2-server-manager
+  BINARY_PATH: "/usr/bin"
+  DESKTOP_PATH: "/usr/share/applications"
+
+tasks:
+  build:
+    desc: Build the app
+    cmds:
+      - go build -v -o ./build/ ./cmd/cs2-server-manager/
+
+  install: 
+    desc: Build and install the app
+    cmds:
+      - task: build
+
+      - mkdir -p {{.BINARY_PATH}}
+      - mkdir -p {{.DESKTOP_PATH}}
+      
+      - cp ./build/{{.BINARY_NAME}} {{.BINARY_PATH}}/{{.BINARY_NAME}}
+      - chmod +x {{.BINARY_PATH}}/{{.BINARY_NAME}} 
+      - |
+        cat <<EOF > {{.DESKTOP_PATH}}/{{.BINARY_NAME}}.desktop
+        [Desktop Entry]
+        Version=1.0
+        Type=Application
+        Name={{.BINARY_NAME}}
+        Exec={{.BINARY_PATH}}/{{.BINARY_NAME}}
+        Icon=utilities-terminal
+        Terminal=true
+        Categories=Utility;
+        EOF
+
+
