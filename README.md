@@ -44,7 +44,6 @@ scoop install cs2/cs2-server-manager
 
 - Support linux firewall utils other than iptables
 - Toggle between blocking/allowing servers instead of just allowing
-- UI/UX improvements
 - Global/China version switch
 - Settings and config file
 
@@ -56,6 +55,9 @@ The tool is not fully accurate and sometimes will connect you to server that are
 Its also possible that you wont find the server you selected. 
 If you have any ideas how to fix that, pull requests are welcome :)
 
-## Credits 
+## Libraries used
 
-https://github.com/rivo/tview - Very cool TUI library.
+https://github.com/charmbracelet/bubbletea and others from [Charm](https://charm.land/) - TUI. 
+https://github.com/spf13/pflag - CLI flags. 
+https://github.com/muesli/reflow - Small library for text wrapping. 
+https://github.com/prometheus-community/pro-bing - For pinging IP addresses. 
