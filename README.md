@@ -42,14 +42,11 @@ scoop install cs2/cs2-server-manager
 
 ## Planned features
 
-- Support linux firewall utils other than iptables
 - Toggle between blocking/allowing servers instead of just allowing
 - Global/China version switch
 - Settings and config file
 
 ## Notes
-
-On linux, only `iptables` is currently supported. Working on making `ufw` and `nftables` work too.
 
 The tool is not fully accurate and sometimes will connect you to server that are **routed** through the server you chose. 
 Its also possible that you wont find the server you selected. 
