@@ -18,6 +18,13 @@ Releases are available for Windows and Linux on the [releases page](https://gith
 
 ### Linux 
 
+#### Build and install
+
+1. Install [GoLang](https://go.dev/doc/install) and [Go-Task](https://taskfile.dev/docs/installation)  
+2. Clone the repo `git clone https://github.com/dom1torii/cs2-server-manager.git`
+3. `cd` into the folder
+4. Run `sudo go-task install`
+
 #### AUR (Arch Linux) 
 
 ```bash
