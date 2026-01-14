@@ -33,4 +33,10 @@ tasks:
         Categories=Utility;
         EOF
 
+  uninstall:
+    desc: Uninstall the app 
+    cmds:
+      - rm -rf ./build 
 
+      - rm {{.BINARY_PATH}}/{{.BINARY_NAME}}
+      - rm {{.DESKTOP_PATH}}/{{.BINARY_NAME}}.desktop
