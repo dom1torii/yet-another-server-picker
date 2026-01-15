@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/pflag"
 
-	"github.com/dom1torii/cs2-server-manager/internal/fs"
+	"github.com/dom1torii/yet-another-server-picker/internal/fs"
 )
 
 type Config struct {

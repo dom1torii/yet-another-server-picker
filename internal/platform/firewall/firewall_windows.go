@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/dom1torii/cs2-server-manager/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
 )
 
 func BlockIps(cfg *config.Config, onDone func()) {

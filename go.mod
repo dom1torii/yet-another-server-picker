@@ -1,4 +1,4 @@
-module github.com/dom1torii/cs2-server-manager
+module github.com/dom1torii/yet-another-server-picker
 
 go 1.25.4
 

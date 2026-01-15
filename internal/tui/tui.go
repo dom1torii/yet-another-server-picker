@@ -4,8 +4,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"time"
 
-	"github.com/dom1torii/cs2-server-manager/internal/api"
-	"github.com/dom1torii/cs2-server-manager/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/api"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
 )
 
 var (

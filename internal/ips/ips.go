@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dom1torii/cs2-server-manager/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
 	"github.com/prometheus-community/pro-bing"
 )
 

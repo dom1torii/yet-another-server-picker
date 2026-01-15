@@ -8,8 +8,8 @@ builds:
       - linux
     goarch:
       - amd64
-    main: ./cmd/cs2-server-manager
-    binary: cs2-server-manager
+    main: ./cmd/yasp
+    binary: yasp
 
   - id: windows
     env:
@@ -18,12 +18,12 @@ builds:
       - windows
     goarch:
       - amd64
-    main: ./cmd/cs2-server-manager
-    binary: cs2-server-manager
+    main: ./cmd/yasp
+    binary: yasp
     hooks:
       pre:
         - go install github.com/akavel/rsrc@latest
-        - rsrc -manifest cmd/cs2-server-manager/cs2-server-manager.manifest -o cmd/cs2-server-manager/rsrc.syso
+        - rsrc -manifest cmd/yasp/yasp.manifest -o cmd/yasp/rsrc.syso
 
 
 archives:

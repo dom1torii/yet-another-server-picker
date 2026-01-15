@@ -7,12 +7,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/dom1torii/cs2-server-manager/internal/api"
-	"github.com/dom1torii/cs2-server-manager/internal/config"
-	"github.com/dom1torii/cs2-server-manager/internal/fs"
-	"github.com/dom1torii/cs2-server-manager/internal/ips"
-	"github.com/dom1torii/cs2-server-manager/internal/platform/firewall"
-	"github.com/dom1torii/cs2-server-manager/internal/presets"
+	"github.com/dom1torii/yet-another-server-picker/internal/api"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/fs"
+	"github.com/dom1torii/yet-another-server-picker/internal/ips"
+	"github.com/dom1torii/yet-another-server-picker/internal/platform/firewall"
+	"github.com/dom1torii/yet-another-server-picker/internal/presets"
 )
 
 func IsCLIMode(cfg *config.Config) bool {

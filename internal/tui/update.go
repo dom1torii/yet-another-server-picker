@@ -4,8 +4,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/dom1torii/cs2-server-manager/internal/ips"
-	"github.com/dom1torii/cs2-server-manager/internal/presets"
+	"github.com/dom1torii/yet-another-server-picker/internal/ips"
+	"github.com/dom1torii/yet-another-server-picker/internal/presets"
 
 	tea "github.com/charmbracelet/bubbletea"
 )

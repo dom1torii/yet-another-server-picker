@@ -1,8 +1,8 @@
 <img width="1500" height="844" alt="aboba123" src="https://github.com/user-attachments/assets/b99ae40c-49c9-4eda-9847-299f38ef8302" />
 
 
-# CS2 Server Manager
-CS2 Server Manager is a TUI tool that allows you to choose CS2 servers you want to play on with ease.
+# Yet Another Server Picker
+YASP is a TUI tool that allows you to choose CS2 servers you want to play on with ease.
 
 ## How it works
 
@@ -14,14 +14,14 @@ No, because all it does is prevent your PC from connecting to certain IPs. It do
 
 ## Installation
 
-Releases are available for Windows and Linux on the [releases page](https://github.com/dom1torii/cs2-server-manager/releases/).
+Releases are available for Windows and Linux on the [releases page](https://github.com/dom1torii/yet-another-server-picker/releases/).
 
 ### Linux 
 
 #### Build and install
 
 1. Install [GoLang](https://go.dev/doc/install) and [Go-Task](https://taskfile.dev/docs/installation)  
-2. Clone the repo `git clone https://github.com/dom1torii/cs2-server-manager.git`
+2. Clone the repo `git clone https://github.com/dom1torii/yet-another-server-picker.git`
 3. `cd` into the folder
 4. Run `sudo go-task install`
 
@@ -37,15 +37,15 @@ Soon
 
 ```
 scoop bucket add cs2 https://github.com/dom1torii/cs2
-scoop install cs2/cs2-server-manager
+scoop install cs2/yasp
 ```
 
 ### Building from source
 
 1. Install GoLang -> https://go.dev/doc/install
-2. Clone the repo `git clone https://github.com/dom1torii/cs2-server-manager.git`
+2. Clone the repo `git clone https://github.com/dom1torii/yet-another-server-picker.git`
 3. `cd` into the folder
-4. Run `go build ./cmd/cs2-server-manager/`
+4. Run `go build ./cmd/yasp/`
 
 ## Planned features
 
@@ -64,4 +64,4 @@ If you have any ideas how to fix that, pull requests are welcome :)
 https://github.com/charmbracelet/bubbletea and others from [Charm](https://charm.land/) - TUI.  
 https://github.com/spf13/pflag - CLI flags.  
 https://github.com/muesli/reflow - Small library for text wrapping.  
-https://github.com/prometheus-community/pro-bing - For pinging IP addresses.  
+https://github.com/prometheus-community/pro-bing - For pinging IP addresses.

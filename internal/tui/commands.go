@@ -7,12 +7,12 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/dom1torii/cs2-server-manager/internal/api"
-	"github.com/dom1torii/cs2-server-manager/internal/config"
-	"github.com/dom1torii/cs2-server-manager/internal/fs"
-	"github.com/dom1torii/cs2-server-manager/internal/ips"
-	"github.com/dom1torii/cs2-server-manager/internal/platform/firewall"
-	"github.com/dom1torii/cs2-server-manager/internal/presets"
+	"github.com/dom1torii/yet-another-server-picker/internal/api"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/fs"
+	"github.com/dom1torii/yet-another-server-picker/internal/ips"
+	"github.com/dom1torii/yet-another-server-picker/internal/platform/firewall"
+	"github.com/dom1torii/yet-another-server-picker/internal/presets"
 )
 
 func (m *model) Init() tea.Cmd {
@@ -20,7 +20,7 @@ func (m *model) Init() tea.Cmd {
 		getRelays(),
 		loadPresets(),
 		m.updateStatus(),
-		tea.SetWindowTitle("CS2 Server Manager"),
+		tea.SetWindowTitle("Yet Another Server Picker"),
 	)
 }
 

@@ -1,26 +1,26 @@
 version: '3'
 
 vars:
-  BINARY_NAME: cs2-server-manager
+  BINARY_NAME: yasp
   BINARY_PATH: "/usr/bin"
   DESKTOP_PATH: "/usr/share/applications"
 
 tasks:
   build:
-    desc: Build the app
+    desc: Build YASP
     cmds:
-      - go build -v -o ./build/ ./cmd/cs2-server-manager/
+      - go build -v -o ./build/ ./cmd/yasp/
 
-  install: 
-    desc: Build and install the app
+  install:
+    desc: Build and install YASP
     cmds:
       - task: build
 
       - mkdir -p {{.BINARY_PATH}}
       - mkdir -p {{.DESKTOP_PATH}}
-      
+
       - cp ./build/{{.BINARY_NAME}} {{.BINARY_PATH}}/{{.BINARY_NAME}}
-      - chmod +x {{.BINARY_PATH}}/{{.BINARY_NAME}} 
+      - chmod +x {{.BINARY_PATH}}/{{.BINARY_NAME}}
       - |
         cat <<EOF > {{.DESKTOP_PATH}}/{{.BINARY_NAME}}.desktop
         [Desktop Entry]
@@ -34,9 +34,9 @@ tasks:
         EOF
 
   uninstall:
-    desc: Uninstall the app 
+    desc: Uninstall YASP
     cmds:
-      - rm -rf ./build 
+      - rm -rf ./build
 
       - rm {{.BINARY_PATH}}/{{.BINARY_NAME}}
       - rm {{.DESKTOP_PATH}}/{{.BINARY_NAME}}.desktop

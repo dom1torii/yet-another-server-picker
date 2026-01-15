@@ -3,7 +3,7 @@ package tui
 import (
 	"time"
 
-	"github.com/dom1torii/cs2-server-manager/internal/api"
+	"github.com/dom1torii/yet-another-server-picker/internal/api"
 )
 
 type firewallMsg struct{}

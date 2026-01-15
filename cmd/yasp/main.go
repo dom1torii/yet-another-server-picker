@@ -6,10 +6,10 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/dom1torii/cs2-server-manager/internal/cli"
-	"github.com/dom1torii/cs2-server-manager/internal/config"
-	"github.com/dom1torii/cs2-server-manager/internal/platform/sudo"
-	"github.com/dom1torii/cs2-server-manager/internal/tui"
+	"github.com/dom1torii/yet-another-server-picker/internal/cli"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/platform/sudo"
+	"github.com/dom1torii/yet-another-server-picker/internal/tui"
 )
 
 func main() {

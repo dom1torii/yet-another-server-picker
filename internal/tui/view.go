@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/muesli/reflow/wordwrap"
 
-	"github.com/dom1torii/cs2-server-manager/internal/presets"
+	"github.com/dom1torii/yet-another-server-picker/internal/presets"
 )
 
 func (m *model) View() string {
@@ -62,7 +62,7 @@ func (m *model) startView() string {
 	items := strings.Join(startChoices, "\n")
 	view := fmt.Sprintf(
 		"%s\n\n%s\n\n%s",
-		wordwrap.String(titleStyle.Render("CS2 Server Manager"), m.width),
+		wordwrap.String(titleStyle.Render("Yet Another Server Picker"), m.width),
 		lipgloss.NewStyle().Width(35).Render(items),
 		wordwrap.String(helpStyle.Render("(↓↑: move | space/enter: select | q/esc: quit)"), m.width),
 	)
