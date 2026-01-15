@@ -30,11 +30,11 @@ type Config struct {
 func Init() *Config {
 	cfg := &Config{}
 
-	defaultIpsPath := fs.GetHomeDir() + "/cs2sm_ips.txt"
-	defaultLogPath := fs.GetHomeDir() + "/cs2sm.log"
+	defaultIpsPath := fs.GetHomeDir() + "/yasp_ips.txt"
+	defaultLogPath := fs.GetHomeDir() + "/yasp.log"
 
-	ipsPath := pflag.StringP("ipspath", "i", defaultIpsPath, "Specify custom ips path path. Default path: {homedir}/cs2sm_ips.txt")
-	logFlag := pflag.BoolP("log", "l", false, "Enable logging. Default path: {homedir}/cs2sm.log")
+	ipsPath := pflag.StringP("ipspath", "i", defaultIpsPath, "Specify custom ips path path. Default path: {homedir}/yasp_ips.txt")
+	logFlag := pflag.BoolP("log", "l", false, "Enable logging. Default path: {homedir}/yasp.log")
 	logPath := pflag.String("logpath", "", "Specify custom log file path.")
 
 	listRelays := pflag.Bool("listrelays", false, "List available relays")
