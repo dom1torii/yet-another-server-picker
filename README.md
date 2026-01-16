@@ -49,7 +49,7 @@ scoop install cs2/yasp
 
 ## Planned features
 
-- Toggle between blocking/allowing servers instead of just allowing
+- ~~Toggle between blocking/allowing servers instead of just allowing~~ added in latest commit
 - Global/China version switch
 - Settings and config file
 
