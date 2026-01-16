@@ -27,6 +27,8 @@ tasks:
         Version=1.0
         Type=Application
         Name={{.BINARY_NAME}}
+        GenericName=TUI server picker for CS2
+        Comment=TUI server picker for CS2
         Exec={{.BINARY_PATH}}/{{.BINARY_NAME}}
         Icon=utilities-terminal
         Terminal=true
