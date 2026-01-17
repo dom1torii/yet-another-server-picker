@@ -64,7 +64,7 @@ func Init() *Config {
 		log.Fatalln("Failed to decode config: ", err)
 	}
 
-	onlyGlobal := pflag.BoolP("onlyglobal", "g",  false, "Only show servers from global version of the game")
+	onlyGlobal := pflag.BoolP("onlyglobal", "g", false, "Only show servers from global version of the game")
 	ipsPath := pflag.StringP("ipspath", "i", getFlag(cfg.Ips.Path, defaultIpsPath), "Specify custom ips path path. Default path: {homedir}/yasp_ips.txt")
 	logFlag := pflag.BoolP("log", "l", cfg.Log.Enabled, "Enable logging. Default path: {homedir}/yasp.log")
 	logPath := pflag.String("logpath", getFlag(cfg.Log.Path, defaultLogPath), "Specify custom log file path.")
@@ -87,9 +87,9 @@ func Init() *Config {
 	isLogFlagSet := pflag.Lookup("log").Changed
 	isPathFlagSet := pflag.Lookup("logpath").Changed
 
- 	if isGlobalFlagSet {
-    cfg.Relays.ShowPW = !*onlyGlobal
-  }
+	if isGlobalFlagSet {
+		cfg.Relays.ShowPW = !*onlyGlobal
+	}
 
 	fs.EnsureDirectory(cfg.Ips.Path)
 

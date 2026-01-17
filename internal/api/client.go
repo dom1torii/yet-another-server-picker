@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dom1torii/yet-another-server-picker/internal/presets"
 	"github.com/dom1torii/yet-another-server-picker/internal/config"
+	"github.com/dom1torii/yet-another-server-picker/internal/presets"
 )
 
 type Response struct {
