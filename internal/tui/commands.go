@@ -17,16 +17,16 @@ import (
 
 func (m *model) Init() tea.Cmd {
 	return tea.Batch(
-		getRelays(),
+		m.getRelays(),
 		loadPresets(),
 		m.updateStatus(),
 		tea.SetWindowTitle("Yet Another Server Picker"),
 	)
 }
 
-func getRelays() tea.Cmd {
+func (m *model) getRelays() tea.Cmd {
 	return func() tea.Msg {
-		resp, err := api.FetchRelays()
+		resp, err := api.FetchRelays(m.cfg)
 		if err != nil {
 			log.Fatalln("Error fetching relays: ", err)
 		}

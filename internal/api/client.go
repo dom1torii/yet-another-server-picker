@@ -5,6 +5,9 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/dom1torii/yet-another-server-picker/internal/presets"
+	"github.com/dom1torii/yet-another-server-picker/internal/config"
 )
 
 type Response struct {
@@ -23,7 +26,7 @@ type Relay struct {
 	PortRange [2]int `json:"port_range"`
 }
 
-func FetchRelays() (Response, error) {
+func FetchRelays(cfg *config.Config) (Response, error) {
 	url := "https://api.steampowered.com/ISteamApps/GetSDRConfig/v1?appid=730"
 	log.Println("Fetching API...")
 
@@ -50,18 +53,23 @@ func FetchRelays() (Response, error) {
 		return Response{}, err
 	}
 
-	response.Pops = filterPops(response.Pops)
+	response.Pops = filterPops(response.Pops, cfg)
 
 	return response, nil
 }
 
 // skip useless pops that have no relays
-func filterPops(pops map[string]Pop) map[string]Pop {
+// also skip perfect world pops if they are disabled
+func filterPops(pops map[string]Pop, cfg *config.Config) map[string]Pop {
 	filteredPops := make(map[string]Pop)
+	pwPops := presets.Presets["cn-pw"].Pops
 	for key, pop := range pops {
 		pop.Key = key
+		_, isPW := pwPops[key]
 		if len(pop.Relays) > 0 {
-			filteredPops[key] = pop
+			if cfg.Relays.ShowPW || !isPW {
+				filteredPops[key] = pop
+			}
 		}
 	}
 	return filteredPops

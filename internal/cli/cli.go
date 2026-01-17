@@ -27,7 +27,7 @@ func IsCLIMode(cfg *config.Config) bool {
 }
 
 func HandleFlags(cfg *config.Config) {
-	response, err := api.FetchRelays()
+	response, err := api.FetchRelays(cfg)
 	if err != nil {
 		log.Fatalln("Failed to fetch relays: ", err)
 	}

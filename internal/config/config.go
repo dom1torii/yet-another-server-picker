@@ -14,8 +14,9 @@ import (
 )
 
 type Config struct {
-	Ips IpsConfig `toml:"ips"`
-	Log LogConfig `toml:"logging"`
+	Relays RelaysConfig `toml:"relays"`
+	Ips    IpsConfig    `toml:"ips"`
+	Log    LogConfig    `toml:"logging"`
 
 	// cli mode
 	ListRelays    bool
@@ -26,6 +27,10 @@ type Config struct {
 	UnBlockRelays bool
 	ToBlockCount  bool
 	BlockedCount  bool
+}
+
+type RelaysConfig struct {
+	ShowPW bool `toml:"show_perfectworld"`
 }
 
 type IpsConfig struct {
@@ -59,6 +64,7 @@ func Init() *Config {
 		log.Fatalln("Failed to decode config: ", err)
 	}
 
+	onlyGlobal := pflag.BoolP("onlyglobal", "g",  false, "Only show servers from global version of the game")
 	ipsPath := pflag.StringP("ipspath", "i", getFlag(cfg.Ips.Path, defaultIpsPath), "Specify custom ips path path. Default path: {homedir}/yasp_ips.txt")
 	logFlag := pflag.BoolP("log", "l", cfg.Log.Enabled, "Enable logging. Default path: {homedir}/yasp.log")
 	logPath := pflag.String("logpath", getFlag(cfg.Log.Path, defaultLogPath), "Specify custom log file path.")
@@ -70,15 +76,20 @@ func Init() *Config {
 	blockRelays := pflag.Bool("blockrelays", false, "Block selected relays")
 	unBlockRelays := pflag.Bool("unblockrelays", false, "Unblock selected relays")
 	toBlockCount := pflag.Bool("toblockcount", false, "Prints amount of relays in your ips file")
-	blockedCount := pflag.Bool("blockedcount", false, "Prints amount of relays in your ips file")
+	blockedCount := pflag.Bool("blockedcount", false, "Prints amount of blocked relays in your firewall")
 
 	pflag.Parse()
 
 	cfg.Ips.Path = *ipsPath
 	cfg.Log.Path = *logPath
 
+	isGlobalFlagSet := pflag.Lookup("onlyglobal").Changed
 	isLogFlagSet := pflag.Lookup("log").Changed
 	isPathFlagSet := pflag.Lookup("logpath").Changed
+
+ 	if isGlobalFlagSet {
+    cfg.Relays.ShowPW = !*onlyGlobal
+  }
 
 	fs.EnsureDirectory(cfg.Ips.Path)
 
@@ -128,6 +139,9 @@ func defaultConfig(path, defaultIps, defaultLog string) {
 	defaultLog = strings.ReplaceAll(defaultLog, "\\", "\\\\")
 
 	content := []byte(strings.Join([]string{
+		"[relays]",
+		"show_perfectworld = true",
+		"",
 		"[ips]",
 		"path = \"" + defaultIps + "\"",
 		"",
