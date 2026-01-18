@@ -28,7 +28,8 @@ func GetHomeDir() string {
 }
 
 func EnsureDirectory(path string) {
-	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+	dir := filepath.Dir(path)
+	if err := os.MkdirAll(dir, 0755); err != nil {
 		log.Fatalln("Failed to create directory: ", err)
 	}
 
@@ -39,6 +40,10 @@ func EnsureDirectory(path string) {
 		}
 		f.Close()
 	}
+
+	// on linux, we won't be able to edit files we create, so we need to change ownership of the files
+	fixPermissions(dir)
+	fixPermissions(path)
 }
 
 func IsFileEmpty(filePath string) bool {
