@@ -2,11 +2,12 @@
 
 
 # Yet Another Server Picker
-YASP is a TUI tool that allows you to choose CS2 servers you want to play on with ease.
+
+YASP - Cross-platform TUI tool that allows you to select which CS2 servers you want to play on by blocking IPs of unwanted servers in your firewall.
 
 ## How it works
 
-It takes relays from https://api.steampowered.com/ISteamApps/GetSDRConfig/v1?appid=730 and allows you to select relays you want. After you made your choice and chose "Block relays you don't want", it uses firewall rules (using iptables on linux and netsh on windows) to block servers you didn't choose.
+YASP fetches relays from https://api.steampowered.com/ISteamApps/GetSDRConfig/v1?appid=730 and allows you to select relays you want or don't want. After you made your choice and chose "Block servers you don't want", it creates firewall rules (using iptables on linux and netsh on windows) to block unwanted servers.
 
 ## Can i get banned
 
@@ -21,9 +22,9 @@ Releases are available for Windows and Linux on the [releases page](https://gith
 #### Build and install
 
 1. Install [GoLang](https://go.dev/doc/install) and [Go-Task](https://taskfile.dev/docs/installation)  
-2. Clone the repo `git clone https://github.com/dom1torii/yet-another-server-picker.git`
+2. Clone the repository: `git clone https://github.com/dom1torii/yet-another-server-picker.git`
 3. `cd` into the folder
-4. Run `sudo go-task install`
+4. Install: `sudo go-task install`
 
 #### AUR (Arch Linux) 
 
@@ -43,22 +44,48 @@ scoop install cs2/yasp
 ### Building from source
 
 1. Install GoLang -> https://go.dev/doc/install
-2. Clone the repo `git clone https://github.com/dom1torii/yet-another-server-picker.git`
-3. `cd` into the folder
-4. Run `go build ./cmd/yasp/`
+2. Clone the repository: `git clone https://github.com/dom1torii/yet-another-server-picker.git`
+4. `cd` into the folder
+5. Build the binary: `go build ./cmd/yasp/`
 
 <!--## Planned features
 
 -->
-## Notes
+## Configuration
 
-The tool is not fully accurate and sometimes will connect you to server that are **routed** through the server you chose. 
-Its also possible that you wont find the server you selected. 
-If you have any ideas how to fix that, pull requests are welcome :)
+Config file is located at `/home/username/.config/yasp/` on linux or `C:\Users\Username\.config\yasp` on windows and is created by default when you first launch the executable.  
+It allows you to easily access and change some settings you might want to change.
+
+Default config would look something like this:
+```toml
+[relays]
+show_perfectworld = true
+
+[ips]
+path = "/home/username/yasp_ips.txt"
+
+[logging]
+enabled = false
+path = "/home/username/yasp.log"
+```
+
+Explaination:  
+`show_perfectworld` - show/hide perfect world servers in the list.  
+`ips:path` - path to the file where ips you selected will be stored.  
+`logging:enabled` - enable logging (for debugging purposes).   
+`logging:path` - path to the file where logs will be stored.  
+
+## Limitations
+
+- Selecting servers is not fully accurate and sometimes you may get routed through the server you selected instead of playing directly on it.
+- Sometimes server you selected may not be found. (using high `mm_dedicated_search_maxping` is recommended)
+
+If you have any ideas on how to fix or improve something, pull requests are always welcome :)
 
 ## Libraries used
 
 https://github.com/charmbracelet/bubbletea and others from [Charm](https://charm.land/) - TUI.  
 https://github.com/spf13/pflag - CLI flags.  
+https://github.com/BurntSushi/toml - TOML parser.
 https://github.com/muesli/reflow - Small library for text wrapping.  
 https://github.com/prometheus-community/pro-bing - For pinging IP addresses.
