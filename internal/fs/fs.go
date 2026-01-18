@@ -38,7 +38,9 @@ func EnsureDirectory(path string) {
 		if err != nil {
 			log.Fatalln("Failed to create file: ", err)
 		}
-		f.Close()
+		if err := f.Close(); err != nil {
+			log.Fatalln("Failed to close file: ", err)
+		}
 	}
 
 	// on linux, we won't be able to edit files we create, so we need to change ownership of the files
