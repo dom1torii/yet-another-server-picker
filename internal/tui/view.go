@@ -27,8 +27,8 @@ func (m *model) View() string {
 
 var startItems = []string{
 	"(1) Select servers",
-	"(2) Presets",
-	"(3) Block servers you don't want",
+	"(2) Use a preset",
+	"(3) Block unwanted servers",
 	"(4) Unblock all servers",
 	"(q) Quit",
 }
@@ -46,11 +46,11 @@ func (m *model) startView() string {
 		startChoices = append(startChoices, startItem(label, m.StartSelection == i))
 		// add status lines
 		if i == 2 {
-			status := fmt.Sprintf("    %d IPs to block", m.IpsCount)
+			status := fmt.Sprintf("    %d IP(s) to block", m.IpsCount)
 			startChoices = append(startChoices, statusStyle.Render(status))
 		}
 		if i == 3 {
-			status := fmt.Sprintf("    %d IPs currently blocked", m.BlockedCount)
+			status := fmt.Sprintf("    %d IP(s) currently blocked", m.BlockedCount)
 			if m.BlockedCount == 0 {
 				startChoices = append(startChoices, statusOkStyle.Render(status))
 			} else {
