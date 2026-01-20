@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+
+	"github.com/dom1torii/yet-another-server-picker/internal/platform/perms"
 )
 
 func GetHomeDir() string {
@@ -44,8 +46,8 @@ func EnsureDirectory(path string) {
 	}
 
 	// on linux, we won't be able to edit files we create, so we need to change ownership of the files
-	fixPermissions(dir)
-	fixPermissions(path)
+	perms.FixPermissions(dir)
+	perms.FixPermissions(path)
 }
 
 func IsFileEmpty(filePath string) bool {

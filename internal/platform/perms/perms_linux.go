@@ -1,4 +1,4 @@
-package fs
+package perms
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func fixPermissions(path string) {
+func FixPermissions(path string) {
 	sudoUid := os.Getenv("SUDO_UID")
 	sudoGid := os.Getenv("SUDO_GID")
 
