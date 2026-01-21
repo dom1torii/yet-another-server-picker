@@ -1,4 +1,5 @@
-<img width="1500" height="844" alt="aboba123" src="https://github.com/user-attachments/assets/b99ae40c-49c9-4eda-9847-299f38ef8302" />
+<img width="1262" height="710" alt="yasp_preview" src="https://github.com/user-attachments/assets/18402ad2-9bd9-4bd8-966a-c3f0ab0ce337" />
+
 
 
 # <img src="assets/icon-256.png" width="25"> Yet Another Server Picker
