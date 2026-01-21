@@ -29,7 +29,7 @@ Releases are available for Windows and Linux on the [releases page](https://gith
 #### AUR (Arch Linux) 
 
 ```bash
-Soon
+paru -S yasp
 ```
 
 ### Windows
