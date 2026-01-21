@@ -54,7 +54,7 @@ scoop install cs2/yasp
 -->
 ## Configuration
 
-Config file is located at `/home/username/.config/yasp/` on linux or `C:\Users\Username\.config\yasp` on windows and is created by default when you first launch the executable.  
+Config file is located at `/home/username/.config/yasp/` on linux or `C:\Users\Username\.config\yasp\` on windows and is created by default when you first launch the executable.  
 It allows you to easily access and change some settings you might want to change.
 
 Default config would look something like this:
