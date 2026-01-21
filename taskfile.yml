@@ -43,5 +43,7 @@ tasks:
     cmds:
       - rm -rf ./build
 
+      - rm {{.ICON_PATH}}/{{.BINARY_NAME}}.png
+
       - rm {{.BINARY_PATH}}/{{.BINARY_NAME}}
       - rm {{.DESKTOP_PATH}}/{{.BINARY_NAME}}.desktop
