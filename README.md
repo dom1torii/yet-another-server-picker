@@ -90,3 +90,7 @@ https://github.com/spf13/pflag - CLI flags.
 https://github.com/BurntSushi/toml - TOML parser.  
 https://github.com/muesli/reflow - Small library for text wrapping.  
 https://github.com/prometheus-community/pro-bing - For pinging IP addresses.
+
+## Credits
+
+Thank you [alekun](https://x.com/akvnxii) for the logo <3
