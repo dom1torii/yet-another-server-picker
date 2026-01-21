@@ -23,7 +23,7 @@ builds:
     hooks:
       pre:
         - go install github.com/akavel/rsrc@latest
-        - rsrc -manifest cmd/yasp/yasp.manifest -o cmd/yasp/rsrc.syso
+        - rsrc -manifest cmd/yasp/yasp.manifest -ico assets/icon.ico -o cmd/yasp/rsrc.syso
 
 
 archives:

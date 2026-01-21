@@ -4,6 +4,7 @@ vars:
   BINARY_NAME: yasp
   BINARY_PATH: "/usr/bin"
   DESKTOP_PATH: "/usr/share/applications"
+  ICON_PATH: "/usr/share/icons/hicolor/256x256/apps"
 
 tasks:
   build:
@@ -19,6 +20,8 @@ tasks:
       - mkdir -p {{.BINARY_PATH}}
       - mkdir -p {{.DESKTOP_PATH}}
 
+      - cp ./assets/icon-256.png {{.ICON_PATH}}/{{.BINARY_NAME}}.png
+
       - cp ./build/{{.BINARY_NAME}} {{.BINARY_PATH}}/{{.BINARY_NAME}}
       - chmod +x {{.BINARY_PATH}}/{{.BINARY_NAME}}
       - |
@@ -30,7 +33,7 @@ tasks:
         GenericName=TUI server picker for CS2
         Comment=TUI server picker for CS2
         Exec={{.BINARY_PATH}}/{{.BINARY_NAME}}
-        Icon=utilities-terminal
+        Icon={{.BINARY_NAME}}
         Terminal=true
         Categories=Utility;
         EOF
