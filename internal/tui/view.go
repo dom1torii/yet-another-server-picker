@@ -82,7 +82,7 @@ func checkbox(label string, pingMs string, isSelected bool, isChecked bool, mode
 
 	if mode == "block" {
 		if isChecked {
-			indicator = "[✖]"
+			indicator = "[x]"
 			indicatorStyle = crossedStyle
 		} else {
 			indicator = "[ ]"
