@@ -20,18 +20,18 @@ Releases are available for Windows and Linux on the [releases page](https://gith
 
 ### Linux 
 
+#### [AUR](https://aur.archlinux.org/packages/yasp) (Arch Linux) 
+
+```bash
+paru -S yasp
+```
+
 #### Build and install
 
 1. Install [GoLang](https://go.dev/doc/install) and [Go-Task](https://taskfile.dev/docs/installation)  
 2. Clone the repository: `git clone https://github.com/dom1torii/yet-another-server-picker.git`
 3. `cd` into the folder
 4. Install: `sudo go-task install`
-
-#### AUR (Arch Linux) 
-
-```bash
-paru -S yasp
-```
 
 ### Windows
 
