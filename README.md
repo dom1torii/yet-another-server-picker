@@ -35,7 +35,12 @@ paru -S yasp
 
 ### Windows
 
-#### [Scoop](https://scoop.sh/) (recommended)
+#### Winget
+```
+winget install yasp
+```
+
+#### [Scoop](https://scoop.sh/)
 
 ```
 scoop bucket add cs2 https://github.com/dom1torii/cs2
