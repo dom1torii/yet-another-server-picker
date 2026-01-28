@@ -1,3 +1,5 @@
+//go:build windows
+
 package perms
 
 func FixPermissions(path string) {
