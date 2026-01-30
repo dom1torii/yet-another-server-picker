@@ -18,15 +18,15 @@ func BlockIps(cfg *config.Config, onDone func()) {
 
 	ruleName := "CS2_BLOCKLIST"
 
-	file, err := os.Open(ipsFile)
+	f, err := os.Open(ipsFile)
 	if err != nil {
 		log.Fatalln("Failed to open a file containing ips: ", err)
 	}
-	defer file.Close()
+	defer f.Close()
 
 	// read ips from a file and then join them with a comma
 	var ips []string
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		ip := strings.TrimSpace(scanner.Text())
 		if ip == "" {

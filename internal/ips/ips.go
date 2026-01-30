@@ -13,19 +13,19 @@ import (
 
 func WriteIpsToFile(ips []string, cfg *config.Config) {
 	ipsFile := cfg.Ips.Path
-	file, err := os.Create(ipsFile)
+	f, err := os.Create(ipsFile)
 	if err != nil {
 		log.Fatalln("Failed to create file: ", err)
 	}
 
 	defer func() {
-		if err := file.Close(); err != nil {
+		if err := f.Close(); err != nil {
 			log.Fatalln("Failed to close file: ", err)
 		}
 	}()
 
 	// 1 ip on every line
-	writer := bufio.NewWriter(file)
+	writer := bufio.NewWriter(f)
 	for _, ip := range ips {
 		_, err := writer.WriteString(ip + "\n")
 		if err != nil {

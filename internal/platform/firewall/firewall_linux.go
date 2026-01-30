@@ -32,19 +32,19 @@ func BlockIps(cfg *config.Config, onDone func()) {
 		}
 	}
 
-	file, err := os.Open(ipsFile)
+	f, err := os.Open(ipsFile)
 	if err != nil {
 		log.Fatalln("Failed to open a file containing ips: ", err)
 	}
 	defer func() {
-		if err := file.Close(); err != nil {
+		if err := f.Close(); err != nil {
 			log.Fatalln("Failed to close file: ")
 		}
 	}()
 
 	// read ips from a file and add them to commands 1 by 1
 	var cmds []string
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		ip := strings.TrimSpace(scanner.Text())
 		if ip == "" {

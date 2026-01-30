@@ -51,29 +51,29 @@ func EnsureDirectory(path string) {
 }
 
 func IsFileEmpty(filePath string) bool {
-	fileInfo, err := os.Stat(filePath)
+	info, err := os.Stat(filePath)
 	if os.IsNotExist(err) {
 		return true
 	} else if err != nil {
 		log.Fatalln("Failed to get file info:", err)
 	}
 
-	return fileInfo.Size() == 0
+	return info.Size() == 0
 }
 
 func GetFileLineCount(filePath string) int {
-	file, err := os.Open(filePath)
+	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatalln("Failed to open file:", err)
 	}
 
 	defer func() {
-		if err := file.Close(); err != nil {
+		if err := f.Close(); err != nil {
 			log.Fatalln("Failed to close file:", err)
 		}
 	}()
 
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(f)
 
 	lines := 0
 	for scanner.Scan() {

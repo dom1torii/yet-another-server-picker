@@ -27,14 +27,14 @@ func IsCLIMode(cfg *config.Config) bool {
 }
 
 func HandleFlags(cfg *config.Config) {
-	response, err := api.FetchRelays(cfg)
+	resp, err := api.FetchRelays(cfg)
 	if err != nil {
 		log.Fatalln("Failed to fetch relays: ", err)
 	}
 
 	if cfg.ListRelays {
-		keys := make([]string, 0, len(response.Pops))
-		for key, pop := range response.Pops {
+		keys := make([]string, 0, len(resp.Pops))
+		for key, pop := range resp.Pops {
 			keys = append(keys, key+" - "+pop.Desc)
 		}
 		sort.Strings(keys)
@@ -44,7 +44,7 @@ func HandleFlags(cfg *config.Config) {
 	if len(cfg.SelectRelays) > 0 {
 		// check if at least one of the relays doesn't exist
 		for _, name := range cfg.SelectRelays {
-			if _, ok := response.Pops[name]; !ok {
+			if _, ok := resp.Pops[name]; !ok {
 				fmt.Fprintf(os.Stderr, "Relay %s doesn't exist\n", name)
 				os.Exit(1)
 			}
@@ -57,7 +57,7 @@ func HandleFlags(cfg *config.Config) {
 			selected[s] = struct{}{}
 		}
 
-		for popName, pop := range response.Pops {
+		for popName, pop := range resp.Pops {
 			if _, isSelected := selected[popName]; !isSelected {
 				for _, relay := range pop.Relays {
 					ipList = append(ipList, relay.Ipv4)
@@ -84,7 +84,7 @@ func HandleFlags(cfg *config.Config) {
 		}
 
 		var ipList []string
-		for popName, pop := range response.Pops {
+		for popName, pop := range resp.Pops {
 			if _, inPreset := preset.Pops[popName]; inPreset {
 				continue
 			}
