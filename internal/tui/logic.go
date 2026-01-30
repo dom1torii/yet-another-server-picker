@@ -5,7 +5,7 @@ import (
 )
 
 func (m *model) getRows() int {
-	return (len(m.Relays) + 1) / 2
+	return (len(m.relays.relays) + 1) / 2
 }
 
 func getStringToSort(desc string) string {
@@ -21,8 +21,8 @@ func getStringToSort(desc string) string {
 
 func (m *model) getSelectedIps() []string {
 	var ips []string
-	for index := range m.RelaysChecked {
-		pop := m.Relays[index]
+	for index := range m.relays.checked {
+		pop := m.relays.relays[index]
 
 		for _, relay := range pop.Relays {
 			if relay.Ipv4 != "" {
@@ -35,8 +35,8 @@ func (m *model) getSelectedIps() []string {
 
 func (m *model) getUnSelectedIps() []string {
 	var ips []string
-	for i, pop := range m.Relays {
-		_, checked := m.RelaysChecked[i]
+	for i, pop := range m.relays.relays {
+		_, checked := m.relays.checked[i]
 		if !checked {
 			for _, relay := range pop.Relays {
 				if relay.Ipv4 != "" {

@@ -53,10 +53,10 @@ func (m *model) pingBatch(startIndex int) tea.Cmd {
 	batchSize := 20
 	var cmds []tea.Cmd
 
-	for i := startIndex; i < startIndex+batchSize && i < len(m.Relays); i++ {
-		if len(m.Relays[i].Relays) > 0 {
-			ip := m.Relays[i].Relays[0].Ipv4
-			isBlocked := m.BlockedMap[ip]
+	for i := startIndex; i < startIndex+batchSize && i < len(m.relays.relays); i++ {
+		if len(m.relays.relays[i].Relays) > 0 {
+			ip := m.relays.relays[i].Relays[0].Ipv4
+			isBlocked := m.start.blockedMap[ip]
 			cmds = append(cmds, getPingToIp(i, ip, isBlocked))
 		}
 	}
@@ -64,8 +64,8 @@ func (m *model) pingBatch(startIndex int) tea.Cmd {
 }
 
 func (m *model) refreshRelays() tea.Cmd {
-	m.Pings = make(map[int]time.Duration)
-	m.Pinged = 0
+	m.relays.pings = make(map[int]time.Duration)
+	m.relays.pinged = 0
 	return m.pingBatch(0)
 }
 
