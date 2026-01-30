@@ -88,6 +88,9 @@ Explaination:
 
 If you have any ideas on how to fix or improve something, pull requests are always welcome :)
 
+## Planned features
+- Custom presets
+
 ## Libraries used
 
 https://github.com/charmbracelet/bubbletea and others from [Charm](https://charm.land/) - TUI.  
