@@ -47,24 +47,6 @@ type model struct {
 	presets presetsModel
 	confirm confirmModel
 
-	// StartRow        int
-	// Relays          []api.Pop
-	// RelaysSelection int
-	// RelaysChecked   map[int]struct{}
-	// Pings           map[int]time.Duration
-	// Pinged          int
-	// BlockedMap      map[string]bool
-	// PresetKeys      []string
-
-	// Mode string
-
-	// IpsCount     int
-	// BlockedCount int
-
-	// StartSelection   int
-	// ConfirmSelection bool
-	// PresetSelection  int
-
 	Err      error
 	Quitting bool
 }
@@ -86,15 +68,6 @@ func InitialModel(cfg *config.Config) *model {
 		presets: presetsModel{
 			selection: 0,
 		},
-		// RelaysSelection: 0,
-		// RelaysChecked:   make(map[int]struct{}),
-		// BlockedMap:      make(map[string]bool),
-		// Pings:           make(map[int]time.Duration),
-
-		// Mode: "allow",
-
-		// StartSelection:  0,
-		// PresetSelection: 0,
 
 		Quitting: false,
 	}
