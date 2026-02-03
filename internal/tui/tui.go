@@ -37,13 +37,13 @@ const (
 )
 
 type model struct {
-	cfg             *config.Config
-	state           sessionState
-	height          int
-	width           int
+	cfg    *config.Config
+	state  sessionState
+	height int
+	width  int
 
-	start startModel
-	relays relaysModel
+	start   startModel
+	relays  relaysModel
 	presets presetsModel
 	confirm confirmModel
 
