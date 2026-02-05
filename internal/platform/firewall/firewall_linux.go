@@ -22,7 +22,7 @@ func BlockIps(cfg *config.Config, onDone func()) {
 	// create custom chain for cs2
 	createChain := exec.Command("iptables", "-N", customChain)
 	if err := createChain.Run(); err != nil {
-		log.Fatalln("Failed to create custom chain: ")
+		log.Fatalln("Failed to create custom chain: ", err)
 	}
 
 	// tie our chain to OUTPUT
