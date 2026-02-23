@@ -35,7 +35,7 @@ paru -S yasp
 
 ### Windows
 
-#### Winget (recommended)
+#### [Winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/) (recommended)
 ```
 winget install yasp
 ```
