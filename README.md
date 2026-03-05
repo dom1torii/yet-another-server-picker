@@ -23,7 +23,7 @@ Releases are available for Windows and Linux on the [releases page](https://gith
 #### [AUR](https://aur.archlinux.org/packages/yasp) (Arch Linux) 
 
 ```bash
-paru -S yasp
+paru -S yasp-bin
 ```
 
 #### Build and install
